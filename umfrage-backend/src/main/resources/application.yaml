@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: umfrage-backend
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:database/online-umfrage.db
+  jpa:
+    database-platform: com.enigmabridge.hibernate.dialect.SQLiteDialect
