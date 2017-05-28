@@ -1,22 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Online-Umfrage</title>
+<head>
+    <title>Online-Umfrage</title>
 
-        <meta charset="utf-8"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="viewport" content="width=device-with, initial-scale=1"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-with, initial-scale=1"/>
 
-        <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
-        <script src="webjars/jquery/3.2.0/jquery.min.js"/>
-        <script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"/>
-    </head>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <script src="/js/index.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#umfrageTabelle tr").click(function() {
+                $("#umfrageTabelle").hide();
+            });
+        });
+    </script>
 
-    <body>
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Online-Umfrage</h2>
-            </div>
+</head>
+
+<body>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Online-Umfrage</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <a id="refresh" class="btn btn-success">
+                <span class="glyphicon glyphicon-refresh"></span>
+                Aktualisieren
+            </a>
+            <a href="umfrageErstellen.html" class="btn btn-default">Neue Umfrage erstellen</a>
         </div>
-    </body>
+    </div>
+    <div>&#160;</div>
+    <table id="umfrageTabelle" class="table table-striped">
+        <tbody id="content"></tbody>
+    </table>
+</div>
+
+</body>
 </html>

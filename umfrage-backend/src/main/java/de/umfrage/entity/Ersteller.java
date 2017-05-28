@@ -1,10 +1,14 @@
 package de.umfrage.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -20,6 +24,7 @@ public class Ersteller {
     private String name;
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ersteller")
+    @OneToMany(mappedBy = "ersteller",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Umfrage> umfragen;
 }

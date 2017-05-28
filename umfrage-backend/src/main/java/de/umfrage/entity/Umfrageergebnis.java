@@ -1,5 +1,6 @@
 package de.umfrage.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class Umfrageergebnis {
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "umfrageID")
+    @JsonBackReference
     private Umfrage umfrage;
 }

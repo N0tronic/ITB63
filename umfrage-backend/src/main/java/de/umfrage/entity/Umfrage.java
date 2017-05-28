@@ -1,12 +1,12 @@
 package de.umfrage.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +28,15 @@ public class Umfrage {
     private Date endedatum;
     private String titel;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "erstellerID")
     @JsonBackReference
     private Ersteller ersteller;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "umfrage")
+    @JsonManagedReference
     private List<Frage> fragen;
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "umfrage")
+    @JsonManagedReference
     private Umfrageergebnis umfrageergebnis;
 
 }

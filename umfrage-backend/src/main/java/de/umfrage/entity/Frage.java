@@ -1,6 +1,7 @@
 package de.umfrage.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +22,12 @@ public class Frage {
     private String fragetext;
     private String erläuterung;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "umfrageID")
     @JsonBackReference
     private Umfrage umfrage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frage")
+    @JsonManagedReference
     private List<Antwortmöglichkeit> antwortmöglichkeiten;
 
 }

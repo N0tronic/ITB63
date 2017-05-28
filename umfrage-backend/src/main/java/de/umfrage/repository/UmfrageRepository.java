@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface UmfrageRepository extends JpaRepository<Umfrage,Integer> {
     List<Umfrage> findAllByErsteller(Ersteller ersteller);
+
+    List<Umfrage> findAllByOrderByErstellungsdatumDesc();
 }

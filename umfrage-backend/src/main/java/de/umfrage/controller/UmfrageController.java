@@ -17,6 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/online-umfrage")
+@CrossOrigin(origins = "*")
 public class UmfrageController {
 
     @Autowired
@@ -36,20 +37,17 @@ public class UmfrageController {
         return ResponseEntity.ok(entries);
     }
 
-    @PutMapping(value = "/umfragen",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createUmfrageEntry(@RequestBody Umfrage entry){
-        entry = umfrageRepository.save(entry);
-        return ResponseEntity.ok(entry);
-    }
-
-    @GetMapping(value = "/ersteller",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getErstellerEntries(){
-        List<Ersteller> entries = erstellerRepository.findAll();
+    @GetMapping(value = "/umfragenDarstellung",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> holeUmfrageInformationen(){
+        List<Umfrage> entries = umfrageRepository.findAllByOrderByErstellungsdatumDesc();
         return ResponseEntity.ok(entries);
     }
 
-    @PutMapping(value = "/ersteller",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createErstellerEntry(@RequestBody Ersteller entry){
+    @PutMapping(value = "/erstelleUmfrage",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> erstelleUmfrage(@RequestBody Ersteller entry){
+        Ersteller ersteller = erstellerRepository.findAllByEmail(entry.getEmail());
+        entry.setName(ersteller.getName());
+        entry.setErstellerID(ersteller.getErstellerID());
         entry = erstellerRepository.save(entry);
         return ResponseEntity.ok(entry);
     }
