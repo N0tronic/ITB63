@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: umfrage-proxy
+
+server:
+  port: 8000
+
+zuul:
+  host:
+    connect-timeout-millis: 5000
+    socket-timeout-millis: 10000
+  routes:
+    backend:
+      path: /online-umfrage/**
+      serviceId: umfrage-backend
+      strip-prefix: false
+    frontend:
+      path: /**
+      serviceId: umfrage-frontend
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+hystrix:
+    command:
+        default:
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 10000

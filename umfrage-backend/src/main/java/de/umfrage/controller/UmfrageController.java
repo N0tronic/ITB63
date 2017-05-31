@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Virus on 27.05.2017.
  */
-@Controller
+@RestController
 @RequestMapping("/online-umfrage")
 @CrossOrigin(origins = "*")
 public class UmfrageController {

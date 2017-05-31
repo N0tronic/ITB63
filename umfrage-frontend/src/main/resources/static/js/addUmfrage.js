@@ -40,7 +40,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url:"http://localhost:8080/online-umfrage/erstelleUmfrage/",
+            url:"/online-umfrage/erstelleUmfrage/",
             method:"PUT",
             contentType:"application/json",
             data:JSON.stringify(data),

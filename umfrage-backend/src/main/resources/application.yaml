@@ -6,3 +6,10 @@ spring:
     url: jdbc:sqlite:database/online-umfrage.db
   jpa:
     database-platform: com.enigmabridge.hibernate.dialect.SQLiteDialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: ${server_port:8080}
