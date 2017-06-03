@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Umfragen Übersicht</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script>
+        function umfrageAuswahl(value) {
+            location.href = "/umfrage?umfragetitel=" + value;
+        }
+    </script>
+</head>
+<body>
+    <div id="nav"></div>
+    <script>
+        $('#nav').load("nav.html",setActive);
+        function setActive() {
+            $("#uebersicht").addClass("nav-item active");
+        }
+    </script>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover row-select">
+                <tr>
+                    <th>Titel</th>
+                    <th>Ersteller</th>
+                    <th>Erstellungsdatum</th>
+                    <th>Startdatum</th>
+                    <th>Endedatum</th>
+                </tr>
+                <tr th:each="umfrage : ${umfragen}" style="cursor: pointer" th:onclick="'javascript:umfrageAuswahl(\'' + ${umfrage.titel} + '\');'">
+                    <td th:text="${umfrage.titel}">Testumfrage</td>
+                    <td th:text="${umfrage.email}">Test@test.de</td>
+                    <td th:text="${#dates.format(umfrage.erstellungsdatum, 'dd.MM.yyyy - HH:mm')}">12.06.2018 - 12:30</td>
+                    <td th:text="${#dates.format(umfrage.startdatum, 'dd.MM.yyyy')}">13.06.2018</td>
+                    <td th:text="${#dates.format(umfrage.endedatum, 'dd.MM.yyyy')}">19.06.2018</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

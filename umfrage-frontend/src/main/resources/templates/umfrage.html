@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Umfragen Übersicht</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div id="nav"></div>
+    <script>
+        $('#nav').load("nav.html");
+    </script>
+
+    <div class="container">
+        <div class="card text-center">
+            <b><div th:text="${umfrage.titel}" class="card-header"/></b>
+            <div th:each="frage : ${umfrage.fragen}" class="card-block text-left">
+                <h4><p th:text="${frage.fragetext}" class="card-title"/></h4>
+                <a><p th:text="${frage.erlaeuterung}" class="card-text"/></a>
+                <br/>
+                <div class="card">
+                    <div class="card-header card-success">
+                        Wählen Sie eine der folgenden Antwortmöglichkeiten
+                    </div>
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover row-select">
+                                <tr th:each="antwort : ${frage.antwortmoeglichkeiten}" style="cursor: pointer" th:onclick="'javascript:aktualisiereAntwort(\'' + ${antwort} + '\');'">
+                                    <td th:text="${antwort.antworttext}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer text-muted">
+                <span
+                th:text="${#dates.format(umfrage.startdatum, 'dd.MM.yyyy')} +
+                '&#160;&#160;&#160; bis &#160;&#160;&#160;' +
+                ${#dates.format(umfrage.endedatum,'dd.MM.yyyy')}"
+                />
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -14,7 +14,9 @@ import java.util.List;
  * Created by Virus on 27.05.2017.
  */
 @Entity
-@Getter @Setter @EqualsAndHashCode
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Umfrage {
 
     @Id
@@ -28,15 +30,20 @@ public class Umfrage {
     private Date endedatum;
     private String titel;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "erstellerID")
     @JsonBackReference
     private Ersteller ersteller;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "umfrage")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "umfrage")
     @JsonManagedReference
     private List<Frage> fragen;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "umfrage")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "umfrage")
     @JsonManagedReference
     private Umfrageergebnis umfrageergebnis;
 
+    public String getEmail() {
+        String erstellerMail = "";
+        if (ersteller != null) erstellerMail = ersteller.getEmail();
+        return erstellerMail;
+    }
 }

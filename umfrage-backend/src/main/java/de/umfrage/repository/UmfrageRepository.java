@@ -13,4 +13,6 @@ public interface UmfrageRepository extends JpaRepository<Umfrage,Integer> {
     List<Umfrage> findAllByErsteller(Ersteller ersteller);
 
     List<Umfrage> findAllByOrderByErstellungsdatumDesc();
+
+    Umfrage findByTitel(String umfragetitel);
 }

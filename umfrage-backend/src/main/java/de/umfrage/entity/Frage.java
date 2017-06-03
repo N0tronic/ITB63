@@ -20,7 +20,7 @@ public class Frage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer frageID;
     private String fragetext;
-    private String erläuterung;
+    private String erlaeuterung;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "umfrageID")
@@ -28,6 +28,6 @@ public class Frage {
     private Umfrage umfrage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frage")
     @JsonManagedReference
-    private List<Antwortmöglichkeit> antwortmöglichkeiten;
+    private List<Antwortmöglichkeit> antwortmoeglichkeiten;
 
 }

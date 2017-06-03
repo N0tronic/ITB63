@@ -1,48 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Online-Umfrage</title>
-
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-with, initial-scale=1"/>
-
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
+    <meta charset="UTF-8">
+    <title>Online-Umfragen</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
     <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
-    <script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-    <script src="/js/index.js"></script>
-    <script>
-        $(document).ready(function(){
-            $("#umfrageTabelle tr").click(function() {
-                $("#umfrageTabelle").hide();
-            });
-        });
-    </script>
-
 </head>
-
 <body>
-<div class="jumbotron">
+    <div id="nav"></div>
+    <script>
+        $('#nav').load("nav.html",setActive);
+        function setActive() {
+            $("#startseite").addClass("nav-item active");
+        }
+    </script>
     <div class="container">
-        <h1>Online-Umfrage</h1>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <a id="refresh" class="btn btn-success">
-                <span class="glyphicon glyphicon-refresh"></span>
-                Aktualisieren
-            </a>
-            <a href="umfrageErstellen.html" class="btn btn-default">Neue Umfrage erstellen</a>
+        <div class="jumbotron">
+            <h1><p>Online-Umfragen</p></h1>
+            <h4>Dies ist eine Seite zur Durchführung von Online-Umfragen</h4>
         </div>
     </div>
-    <div>&#160;</div>
-    <table id="umfrageTabelle" class="table table-striped">
-        <tbody id="content"></tbody>
-    </table>
-</div>
-
 </body>
 </html>

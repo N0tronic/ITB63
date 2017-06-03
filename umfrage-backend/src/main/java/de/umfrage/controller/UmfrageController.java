@@ -1,7 +1,9 @@
 package de.umfrage.controller;
 
+import de.umfrage.entity.Antwortmöglichkeit;
 import de.umfrage.entity.Ersteller;
 import de.umfrage.entity.Umfrage;
+import de.umfrage.repository.AntwortRepository;
 import de.umfrage.repository.ErstellerRepository;
 import de.umfrage.repository.UmfrageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,32 +26,38 @@ public class UmfrageController {
     private UmfrageRepository umfrageRepository;
     @Autowired
     private ErstellerRepository erstellerRepository;
+    @Autowired
+    private AntwortRepository antwortRepository;
 
-    @GetMapping(value = "/umfragen",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUmfrageEntries(){
-        List<Umfrage> entries = umfrageRepository.findAll();
-        return ResponseEntity.ok(entries);
+    @GetMapping(value = "/umfrageByTitel", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> holeUmfrageByTitel(@RequestParam("umfragetitel") String umfragetitel) {
+        Umfrage umfrage = umfrageRepository.findByTitel(umfragetitel);
+        return ResponseEntity.ok(umfrage);
     }
 
-    @PostMapping(value = "/umfragen",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUmfrageEntriesByErsteller(@RequestBody Ersteller ersteller){
-        List<Umfrage> entries = umfrageRepository.findAllByErsteller(ersteller);
-        return ResponseEntity.ok(entries);
+    @GetMapping(value = "/alleUmfragen", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> holeUmfrageInformationen() {
+        List<Umfrage> umfragen = umfrageRepository.findAllByOrderByErstellungsdatumDesc();
+        return ResponseEntity.ok(umfragen);
     }
 
-    @GetMapping(value = "/umfragenDarstellung",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> holeUmfrageInformationen(){
-        List<Umfrage> entries = umfrageRepository.findAllByOrderByErstellungsdatumDesc();
-        return ResponseEntity.ok(entries);
+    @PostMapping(value = "/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateAntworthäufigkeit(@RequestBody Antwortmöglichkeit antwortmöglichkeit) {
+        Antwortmöglichkeit antwort = antwortRepository.findByAntwortID(antwortmöglichkeit.getAntwortID());
+        Integer antworthäufigkeit = antwort.getAntworthaeufigkeit() + 1;
+        antwort.setAntworthaeufigkeit(antworthäufigkeit);
+        antwort = antwortRepository.save(antwort);
+        return ResponseEntity.ok(antwort);
     }
 
-    @PutMapping(value = "/erstelleUmfrage",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> erstelleUmfrage(@RequestBody Ersteller entry){
+    @PutMapping(value = "/erstelleUmfrage", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> erstelleUmfrage(@RequestBody Ersteller entry) {
         Ersteller ersteller = erstellerRepository.findAllByEmail(entry.getEmail());
         entry.setName(ersteller.getName());
         entry.setErstellerID(ersteller.getErstellerID());
         entry = erstellerRepository.save(entry);
         return ResponseEntity.ok(entry);
     }
+
 
 }
