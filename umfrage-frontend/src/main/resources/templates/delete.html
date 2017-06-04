@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Online-Umfragen</title>
+    <title>Umfrage entfernt</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
     <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
 </head>
@@ -12,15 +12,12 @@
     $('#nav').load("nav.html");
 </script>
 <div class="container">
-    <div align="center" class="alert alert-danger">
-        <h3>
-        <p><strong>Es gibt ein Problem!</strong></p>
-        Wir können die Seite leider nicht finden.
-        </h3>
+    <div class="jumbotron">
+        <h1><p>Umfrage entfernt</p></h1>
+        <h4>Die folgende Umfrage konnte erfolgreich entfernt werden:
+            <p><br/><b th:text="${titel} "/></p>
+        </h4>
     </div>
-    <video width="100%" height="100%" class="embed-responsive-item" loop="true" autoplay="true">
-        <source src="/error/error.mp4" type="video/mp4"/>
-    </video>
 </div>
 </body>
 </html>

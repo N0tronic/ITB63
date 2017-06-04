@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var d = /*[[${stats}]]*/  ;
+            var data = google.visualization.arrayToDataTable(d);
+
+            var options = {
+                title: /*[[${frage}]]*/,
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+<div id="nav"></div>
+<script>
+    $('#nav').load("nav.html");
+</script>
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <b th:text="${titel}"/>
+        </div>
+        <div class="card-block">
+            <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+        </div>
+        <div class="card-footer text-muted">
+            Teilnahmeranzahl: <a th:text="${gesamtanzahl}"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

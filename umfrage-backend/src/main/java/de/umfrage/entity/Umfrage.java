@@ -30,16 +30,13 @@ public class Umfrage {
     private Date endedatum;
     private String titel;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "erstellerID")
     @JsonBackReference
     private Ersteller ersteller;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "umfrage")
     @JsonManagedReference
     private List<Frage> fragen;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "umfrage")
-    @JsonManagedReference
-    private Umfrageergebnis umfrageergebnis;
 
     public String getEmail() {
         String erstellerMail = "";

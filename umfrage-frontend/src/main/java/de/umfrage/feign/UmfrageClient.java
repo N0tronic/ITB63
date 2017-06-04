@@ -22,5 +22,11 @@ public interface UmfrageClient {
     ResponseEntity<Umfrage> holeUmfrageByTitel(@RequestParam("umfragetitel") String umfragetitel);
 
     @PostMapping(value = "/online-umfrage/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Antwortmoeglichkeit> updateAntworthäufigkeit(@RequestBody Antwortmoeglichkeit antwortmöglichkeit);
+    ResponseEntity<Antwortmoeglichkeit> updateAntworthäufigkeit(@RequestBody int antwortID);
+
+    @GetMapping(value = "/online-umfrage/antwortenByUmfragetitel", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Antwortmoeglichkeit>> holeUmfrageAntwortenByTitel(@RequestParam("umfragetitel") String umfragetitel);
+
+    @PostMapping(value = "/online-umfrage/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void deleteUmfrage(@RequestBody int umfrageID);
 }

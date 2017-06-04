@@ -4,13 +4,12 @@ import de.umfrage.clientmodel.Antwortmoeglichkeit;
 import de.umfrage.clientmodel.Umfrage;
 import de.umfrage.feign.UmfrageClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,9 +24,47 @@ public class UmfrageController {
     UmfrageClient umfrageClient;
 
     @PostMapping(value = "/aktualisiereAntworten")
-    public ResponseEntity<Antwortmoeglichkeit> aktualisiereAntwort(@RequestBody Antwortmoeglichkeit antwortmoeglichkeit) {
-        ResponseEntity<Antwortmoeglichkeit> antwort = umfrageClient.updateAntworthäufigkeit(antwortmoeglichkeit);
-        return ResponseEntity.ok(antwort.getBody());
+    public String aktualisiereAntwort(Model model, int antwortID, String titel) {
+        umfrageClient.updateAntworthäufigkeit(antwortID);
+        return this.showUmfrageStatistics(titel,model);
+    }
+
+    @PostMapping(value = "/loescheUmfrage")
+    public String loescheUmfrage(Model model, String titel, int umfrageID) {
+        umfrageClient.deleteUmfrage(umfrageID);
+        model.addAttribute("titel",titel);
+        return "delete";
+    }
+
+    @GetMapping("/umfragestatistik")
+    public String showUmfrageStatistics(@RequestParam("umfragetitel") String umfragetitel, Model model) {
+        ResponseEntity<List<Antwortmoeglichkeit>> responseEntity = umfrageClient.holeUmfrageAntwortenByTitel(umfragetitel);
+        ResponseEntity<Umfrage> umfrageEntity = umfrageClient.holeUmfrageByTitel(umfragetitel);
+        Umfrage umfrage = umfrageEntity.getBody();
+        List<Antwortmoeglichkeit> antwortmoeglichkeiten = responseEntity.getBody();
+        int anzahl = 0,gesamtanzahl = 0;
+        for (Antwortmoeglichkeit antwortmoeglichkeit : antwortmoeglichkeiten) {
+            if(antwortmoeglichkeit.getAntworthaeufigkeit() > 0){
+                gesamtanzahl += antwortmoeglichkeit.getAntworthaeufigkeit();
+                anzahl++;
+            }
+        }
+        Object[][] stats = new Object[anzahl+1][2];
+        int i = 1;
+        stats[0][0] = "Antwort";
+        stats[0][1] = "Antwortanzahl";
+        for(Antwortmoeglichkeit antwort : antwortmoeglichkeiten){
+            if(antwort.getAntworthaeufigkeit() > 0){
+                stats[i][0] = antwort.getAntworttext();
+                stats[i][1] = antwort.getAntworthaeufigkeit();
+                i++;
+            }
+        }
+        model.addAttribute("gesamtanzahl", gesamtanzahl);
+        model.addAttribute("titel", umfragetitel);
+        model.addAttribute("frage", umfrage.getFragen().get(0).getFragetext());
+        model.addAttribute("stats", stats);
+        return "statistic";
     }
 
     @GetMapping("/alleUmfragen")

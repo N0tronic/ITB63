@@ -22,3 +22,13 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 15000
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

@@ -22,7 +22,7 @@ public class Frage {
     private String fragetext;
     private String erlaeuterung;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "umfrageID")
     @JsonBackReference
     private Umfrage umfrage;

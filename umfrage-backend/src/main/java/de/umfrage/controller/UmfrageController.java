@@ -2,6 +2,7 @@ package de.umfrage.controller;
 
 import de.umfrage.entity.Antwortmöglichkeit;
 import de.umfrage.entity.Ersteller;
+import de.umfrage.entity.Frage;
 import de.umfrage.entity.Umfrage;
 import de.umfrage.repository.AntwortRepository;
 import de.umfrage.repository.ErstellerRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,13 +43,26 @@ public class UmfrageController {
         return ResponseEntity.ok(umfragen);
     }
 
+    @GetMapping(value = "/antwortenByUmfragetitel", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> holeUmfrageAntwortenByTitel(@RequestParam("umfragetitel") String umfragetitel) {
+        Umfrage umfrage = umfrageRepository.findByTitel(umfragetitel);
+        Frage frage = umfrage.getFragen().get(0);
+        List<Antwortmöglichkeit> antwortmöglichkeiten = frage.getAntwortmoeglichkeiten();
+        return ResponseEntity.ok(antwortmöglichkeiten);
+    }
+
     @PostMapping(value = "/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateAntworthäufigkeit(@RequestBody Antwortmöglichkeit antwortmöglichkeit) {
-        Antwortmöglichkeit antwort = antwortRepository.findByAntwortID(antwortmöglichkeit.getAntwortID());
+    public ResponseEntity<?> updateAntworthäufigkeit(@RequestBody int antwortID) {
+        Antwortmöglichkeit antwort = antwortRepository.findByAntwortID(antwortID);
         Integer antworthäufigkeit = antwort.getAntworthaeufigkeit() + 1;
         antwort.setAntworthaeufigkeit(antworthäufigkeit);
         antwort = antwortRepository.save(antwort);
         return ResponseEntity.ok(antwort);
+    }
+
+    @PostMapping(value = "/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteUmfrage(@RequestBody int umfrageID) {
+        umfrageRepository.delete(umfrageID);
     }
 
     @PutMapping(value = "/erstelleUmfrage", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

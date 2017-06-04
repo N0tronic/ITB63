@@ -14,6 +14,6 @@ public class Antwortmoeglichkeit {
 
     private Integer antwortID;
     private String antworttext;
-    private Integer antworthäufigkeit = 0;
+    private Integer antworthaeufigkeit = 0;
 
 }

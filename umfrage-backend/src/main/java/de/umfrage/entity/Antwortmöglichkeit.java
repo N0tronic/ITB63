@@ -18,7 +18,7 @@ public class Antwortmöglichkeit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer antwortID;
     private String antworttext;
-    private Integer antworthaeufigkeit = 0;
+    private Integer antworthaeufigkeit;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "frageID")
     @JsonBackReference
