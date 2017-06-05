@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Umfragebearbeitung</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/octicons/4.3.0/build/font/octicons.css"/>
+</head>
+<body>
+<div id="nav"></div>
+<script>
+    $('#nav').load("nav.html",setActive);
+    function setActive() {
+        $("#bearbeiten").addClass("nav-item active");
+    }
+</script>
+
+<div class="container">
+    <form id="umfrageForm" class="form-horizontal" th:action="@{/speichereErstellerUmfrage}" th:object="${ersteller}" method="post">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Umfrageinformationen
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group row">
+                            <label class="col-4 col-form-label">Titel</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" th:field="*{name}" placeholder="Ihr Umfragetitel"/>
+                            </div>
+                        </div>
+                        <!--<div class="form-group row">
+                            <label class="col-4 col-form-label">Startdatum</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" th:field="*{startdatum}" type="date"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-4 col-form-label">Endedatum</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" th:field="*{endedatum}" type="date"/>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Erstellerinformation
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group row">
+                            <label class="col-5 col-form-label">Name</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" type="text" th:field="*{name}" placeholder="Name eingeben"
+                                       required="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-5 col-form-label">Ersteller Mailadresse</label>
+                            <div class="col-sm-5">
+                                <input type="email" class="form-control" th:field="*{email}" placeholder="Mustermann@max.de"
+                                       required="true"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card">
+            <div class="card-header">
+                Frageinformationen
+            </div>
+            <div class="card-block">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Frage</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Fragesatz"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" >Erläuterung</label>
+                    <div class="col-sm-10">
+                        <textarea rows="4" class="form-control" placeholder="Nähere Erläuterung der Frage"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Es können maximal vier Antwortmöglichkeiten gegeben werden.
+            </div>
+            <div class="card-block">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Antwort A:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Hier können Sie eine mögliche Antwort eintragen."/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Antwort B:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Hier können Sie eine mögliche Antwort eintragen."/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Antwort C:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Hier können Sie eine mögliche Antwort eintragen."/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">Antwort D:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Hier können Sie eine mögliche Antwort eintragen."/>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="card">
+            <div class="card-header">
+                Optionen
+            </div>
+            <div class="card-block text-center">
+                <div class="container">
+                    <div class="form-group row">
+                        <button class="btn btn-outline-success" style="cursor: pointer" type="submit">Umfrage aspeichern &nbsp;<i class="octicon octicon-repo-push"/></button>&nbsp;
+                        <button class="btn btn-outline-danger" style="cursor: pointer" type="reset">Reset Formular &nbsp;<i class="octicon octicon-sync"/></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#umfrageForm').formValidation();
+    });
+</script>
+</body>
+</html>

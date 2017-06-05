@@ -46,20 +46,22 @@
                         <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
                         <button id="checkButton" class="btn btn-outline-success" type="submit" disabled="true">
                             Abstimmen &nbsp;<i class="octicon octicon-check"/></button>
+                        <a th:href="@{umfragestatistik(umfragetitel=${umfrage.titel})}" class="btn btn-outline-primary" role="button">Zum Umfrageergebnis
+                            &nbsp;<i class="octicon octicon-dashboard"/></a>
                     </form>
                     <br/>
                 </div>
             </div>
         </div>
-        <form th:action="@{/loescheUmfrage}" method="post">
-            <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
-            <input type="hidden" th:value="${umfrage.umfrageID}" th:name="umfrageID"/>
-            <button id="checkButton" class="btn btn-outline-danger" type="submit">Umfrage entfernen &nbsp;<i class="octicon octicon-trashcan"/></button>
-        </form>
-        <a th:href="@{loescheUmfrage(umfragetitel=${umfrage.titel},umfrageID=${umfrage.umfrageID})}" class="btn btn-outline-danger" role="button">Umfrage
-            editieren &nbsp;<i class="octicon octicon-pencil"/></a>
-        <a th:href="@{umfragestatistik(umfragetitel=${umfrage.titel})}" class="btn btn-outline-primary" role="button">Zur Umfragestatistik
-            &nbsp;<i class="octicon octicon-dashboard"/></a>
+        <div class="container form-inline card-block text-left">
+            <a th:href="@{loescheUmfrage(umfragetitel=${umfrage.titel},umfrageID=${umfrage.umfrageID})}" class="btn btn-outline-info" role="button">Umfrage
+                editieren &nbsp;<i class="octicon octicon-pencil"/></a>&nbsp;
+            <form th:action="@{/loescheUmfrage}" method="post">
+                <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
+                <input type="hidden" th:value="${umfrage.umfrageID}" th:name="umfrageID"/>
+                <button id="checkButton" class="btn btn-outline-danger" type="submit">Umfrage entfernen &nbsp;<i class="octicon octicon-trashcan"/></button>
+            </form>
+        </div>
         <div class="card-footer text-muted">
                 <span
                         th:text="${#dates.format(umfrage.startdatum, 'dd.MM.yyyy')} +

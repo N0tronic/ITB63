@@ -1,16 +1,14 @@
 package de.umfrage.controller;
 
 import de.umfrage.clientmodel.Antwortmoeglichkeit;
+import de.umfrage.clientmodel.Ersteller;
 import de.umfrage.clientmodel.Umfrage;
 import de.umfrage.feign.UmfrageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +21,11 @@ public class UmfrageController {
     @Autowired
     UmfrageClient umfrageClient;
 
+    @PostMapping(value = "/speichereErstellerUmfrage")
+    public String speichereUmfrage(@ModelAttribute Ersteller ersteller) {
+        return "save";
+    }
+
     @PostMapping(value = "/aktualisiereAntworten")
     public String aktualisiereAntwort(Model model, int antwortID, String titel) {
         umfrageClient.updateAntworthäufigkeit(antwortID);
@@ -34,6 +37,12 @@ public class UmfrageController {
         umfrageClient.deleteUmfrage(umfrageID);
         model.addAttribute("titel",titel);
         return "delete";
+    }
+
+    @GetMapping(value = "/umfrageErstellung")
+    public String bearbeiteUmfrage(Model model) {
+        model.addAttribute("ersteller",new Ersteller());
+        return "umfrageBearbeitung";
     }
 
     @GetMapping("/umfragestatistik")
