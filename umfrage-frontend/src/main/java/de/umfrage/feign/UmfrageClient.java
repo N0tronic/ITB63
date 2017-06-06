@@ -1,6 +1,7 @@
 package de.umfrage.feign;
 
 import de.umfrage.clientmodel.Antwortmoeglichkeit;
+import de.umfrage.clientmodel.Ersteller;
 import de.umfrage.clientmodel.Umfrage;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -25,8 +26,12 @@ public interface UmfrageClient {
     ResponseEntity<Antwortmoeglichkeit> updateAntworthäufigkeit(@RequestBody int antwortID);
 
     @GetMapping(value = "/online-umfrage/antwortenByUmfragetitel", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Antwortmoeglichkeit>> holeUmfrageAntwortenByTitel(@RequestParam("umfragetitel") String umfragetitel);
+    ResponseEntity<List<Antwortmoeglichkeit>> holeUmfrageAntwortenByTitel(@RequestParam("umfragetitel") String umfragetitel);
 
     @PostMapping(value = "/online-umfrage/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)
     void deleteUmfrage(@RequestBody int umfrageID);
+
+    @PutMapping(value = "/online-umfrage/createErsteller", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Ersteller> createErsteller(@RequestBody Ersteller ersteller);
+
 }

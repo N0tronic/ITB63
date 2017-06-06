@@ -2,6 +2,7 @@ package de.umfrage.controller;
 
 import de.umfrage.clientmodel.Antwortmoeglichkeit;
 import de.umfrage.clientmodel.Ersteller;
+import de.umfrage.clientmodel.Frage;
 import de.umfrage.clientmodel.Umfrage;
 import de.umfrage.feign.UmfrageClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +25,24 @@ public class UmfrageController {
     UmfrageClient umfrageClient;
 
     @PostMapping(value = "/speichereErstellerUmfrage")
-    public String speichereUmfrage(@ModelAttribute Ersteller ersteller) {
-        return "save";
+    public String speichereUmfrage(@ModelAttribute Ersteller ersteller,Model model) {
+        List<Antwortmoeglichkeit> leereAntworten = new ArrayList<>();
+        String umfragetitel = ersteller.getUmfragen().get(0).getTitel();
+        for (Umfrage umfrage: ersteller.getUmfragen()){
+            umfrage.setErstellungsdatum(new Date());
+            for (Frage frage : umfrage.getFragen()) {
+                for (Antwortmoeglichkeit antwortmoeglichkeit : frage.getAntwortmoeglichkeiten()) {
+                    if(antwortmoeglichkeit.getAntworttext() == ""){
+                        leereAntworten.add(antwortmoeglichkeit);
+                    }
+                }
+                for (Antwortmoeglichkeit antwortmoeglichkeit : leereAntworten) {
+                    frage.getAntwortmoeglichkeiten().remove(antwortmoeglichkeit);
+                }
+            }
+        }
+        umfrageClient.createErsteller(ersteller);
+        return this.showUmfrageByTitel(umfragetitel,model);
     }
 
     @PostMapping(value = "/aktualisiereAntworten")
@@ -42,6 +61,20 @@ public class UmfrageController {
     @GetMapping(value = "/umfrageErstellung")
     public String bearbeiteUmfrage(Model model) {
         model.addAttribute("ersteller",new Ersteller());
+        model.addAttribute("edit",false);
+        return "umfrageBearbeitung";
+    }
+
+    @PostMapping(value = "/umfrageErstellung")
+    public String bearbeiteVorhandeneUmfrage(String titel, Model model) {
+        Umfrage umfrage = umfrageClient.holeUmfrageByTitel(titel).getBody();
+        Ersteller ersteller = new Ersteller();
+        ersteller.setEmail(umfrage.getEmail());
+        List<Umfrage> umfragen = new ArrayList<>(1);
+        umfragen.add(umfrage);
+        ersteller.setUmfragen(umfragen);
+        model.addAttribute("ersteller",ersteller);
+        model.addAttribute("edit",true);
         return "umfrageBearbeitung";
     }
 

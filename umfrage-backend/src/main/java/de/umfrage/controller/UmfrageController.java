@@ -10,10 +10,8 @@ import de.umfrage.repository.UmfrageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +29,17 @@ public class UmfrageController {
     @Autowired
     private AntwortRepository antwortRepository;
 
-    @GetMapping(value = "/umfrageByTitel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateAntworthäufigkeit(@RequestBody int antwortID) {
+        Antwortmöglichkeit antwort = antwortRepository.findByAntwortID(antwortID);
+        Integer antworthäufigkeit = antwort.getAntworthaeufigkeit() + 1;
+        antwort.setAntworthaeufigkeit(antworthäufigkeit);
+        antwort = antwortRepository.save(antwort);
+        return ResponseEntity.ok(antwort);
+    }
+
+
+        @GetMapping(value = "/umfrageByTitel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> holeUmfrageByTitel(@RequestParam("umfragetitel") String umfragetitel) {
         Umfrage umfrage = umfrageRepository.findByTitel(umfragetitel);
         return ResponseEntity.ok(umfrage);
@@ -51,13 +59,14 @@ public class UmfrageController {
         return ResponseEntity.ok(antwortmöglichkeiten);
     }
 
-    @PostMapping(value = "/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateAntworthäufigkeit(@RequestBody int antwortID) {
-        Antwortmöglichkeit antwort = antwortRepository.findByAntwortID(antwortID);
-        Integer antworthäufigkeit = antwort.getAntworthaeufigkeit() + 1;
-        antwort.setAntworthaeufigkeit(antworthäufigkeit);
-        antwort = antwortRepository.save(antwort);
-        return ResponseEntity.ok(antwort);
+    @PutMapping(value = "/createErsteller", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createErsteller(@RequestBody Ersteller ersteller) {
+        Ersteller erstellerByMail =  erstellerRepository.findAllByEmail(ersteller.getEmail());
+        if(erstellerByMail != null){
+            ersteller.setErstellerID(erstellerByMail.getErstellerID());
+        }
+        Ersteller erstellerEntity = erstellerRepository.save(ersteller);
+        return ResponseEntity.ok(erstellerEntity);
     }
 
     @PostMapping(value = "/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,76 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <title>Umfragen Übersicht</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
-    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
-    <script src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/webjars/octicons/4.3.0/build/font/octicons.css"/>
-</head>
-<body>
+    <head>
+        <title>Umfragen Übersicht</title>
+        <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
+        <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+        <script src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/webjars/octicons/4.3.0/build/font/octicons.css"/>
+        <script type="text/javascript" th:inline="javascript">
+            var start = /*[[${umfrage.startdatum}]]*/;
+            var ende = /*[[${umfrage.endedatum}]]*/;
+        </script>
+        <script type="text/javascript" src="js/umfrage.js"></script>
+    </head>
 
-<div id="nav"></div>
-<script>
-    $(document).ready(function () {
-        $('input:radio').prop('checked', false);
-    });
-    $('#nav').load("nav.html");
-    function check() {
-        document.getElementById('checkButton').disabled = false;
-        document.getElementById('checkButton').style = "cursor: pointer";
-    }
-</script>
-
-<div class="container">
-    <div class="card text-center">
-        <b>
-            <div th:text="${umfrage.titel}" class="card-header"/>
-        </b>
-        <div th:each="frage : ${umfrage.fragen}" class="card-block text-left">
-            <h4><p th:text="${frage.fragetext}" class="card-title"/></h4>
-            <a th:text="${frage.erlaeuterung}" class="card-text"/><br/>
-            <br/>
-            <div class="card">
-                <div class="card-header card">
-                    Wählen Sie eine der folgenden Antwortmöglichkeiten
+    <body>
+        <div id="nav"></div>
+        <div class="container">
+            <div class="card text-center">
+                <b>
+                    <div th:text="${umfrage.titel}" class="card-header"/>
+                </b>
+                <div th:each="frage : ${umfrage.fragen}" class="card-block text-left">
+                    <h4><p th:text="${frage.fragetext}" class="card-title"/></h4>
+                    <a th:text="${frage.erlaeuterung}" class="card-text"/><br/>
+                    <br/>
+                    <div class="card">
+                        <div class="card-header card">
+                            Wählen Sie eine der folgenden Antwortmöglichkeiten
+                        </div>
+                        <div class="container">
+                            <br/>
+                            <form th:action="@{/aktualisiereAntworten}" method="post">
+                                <p th:each="antwort : ${frage.antwortmoeglichkeiten}">
+                                    <input th:id="${antwort.antwortID}" onclick="check()" type="radio"
+                                           th:value="${antwort.antwortID}" th:name="antwortID"/>
+                                    <label th:for="${antwort.antwortID}"> <a th:text="${antwort.antworttext}"/></label>
+                                </p>
+                                <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
+                                <button id="checkButton" class="btn btn-outline-success" type="submit" disabled="true">Abstimmen &nbsp;<i class="octicon octicon-check"/></button>&nbsp;
+                                <a th:href="@{umfragestatistik(umfragetitel=${umfrage.titel})}" class="btn btn-outline-primary" role="button">Zum Umfrageergebnis
+                                    &nbsp;<i class="octicon octicon-dashboard"/></a>
+                            </form>
+                            <br/>
+                        </div>
+                    </div>
                 </div>
-                <div class="container">
-                    <br/>
-                    <form th:action="@{/aktualisiereAntworten}" method="post">
-                        <p th:each="antwort : ${frage.antwortmoeglichkeiten}">
-                            <input th:id="${antwort.antwortID}" onclick="check()" type="radio"
-                                   th:value="${antwort.antwortID}" th:name="antwortID"/>
-                            <label th:for="${antwort.antwortID}"> <a th:text="${antwort.antworttext}"/></label>
-                        </p>
+                <div class="container form-inline card-block text-left">
+                    <form th:action="@{/umfrageErstellung}" method="post">
                         <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
-                        <button id="checkButton" class="btn btn-outline-success" type="submit" disabled="true">
-                            Abstimmen &nbsp;<i class="octicon octicon-check"/></button>
-                        <a th:href="@{umfragestatistik(umfragetitel=${umfrage.titel})}" class="btn btn-outline-primary" role="button">Zum Umfrageergebnis
-                            &nbsp;<i class="octicon octicon-dashboard"/></a>
+                        <button id="editButton" class="btn btn-outline-info" type="submit">Umfrage editieren &nbsp;<i class="octicon octicon-pencil"/></button>
                     </form>
-                    <br/>
+                    &nbsp;
+                    <form th:action="@{/loescheUmfrage}" method="post">
+                        <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
+                        <input type="hidden" th:value="${umfrage.umfrageID}" th:name="umfrageID"/>
+                        <button style="cursor: pointer" class="btn btn-outline-danger" type="submit">Umfrage entfernen &nbsp;<i class="octicon octicon-trashcan"/></button>
+                    </form>
+                </div>
+                <div id="dateFooter" class="card-footer text-muted">
+                        <span
+                                th:text="${#dates.format(umfrage.startdatum, 'dd.MM.yyyy')} +
+                        '&#160;&#160;&#160; bis &#160;&#160;&#160;' +
+                        ${#dates.format(umfrage.endedatum,'dd.MM.yyyy')}"
+                        />
                 </div>
             </div>
         </div>
-        <div class="container form-inline card-block text-left">
-            <a th:href="@{loescheUmfrage(umfragetitel=${umfrage.titel},umfrageID=${umfrage.umfrageID})}" class="btn btn-outline-info" role="button">Umfrage
-                editieren &nbsp;<i class="octicon octicon-pencil"/></a>&nbsp;
-            <form th:action="@{/loescheUmfrage}" method="post">
-                <input type="hidden" th:value="${umfrage.titel}" th:name="titel"/>
-                <input type="hidden" th:value="${umfrage.umfrageID}" th:name="umfrageID"/>
-                <button id="checkButton" class="btn btn-outline-danger" type="submit">Umfrage entfernen &nbsp;<i class="octicon octicon-trashcan"/></button>
-            </form>
-        </div>
-        <div class="card-footer text-muted">
-                <span
-                        th:text="${#dates.format(umfrage.startdatum, 'dd.MM.yyyy')} +
-                '&#160;&#160;&#160; bis &#160;&#160;&#160;' +
-                ${#dates.format(umfrage.endedatum,'dd.MM.yyyy')}"
-                />
-        </div>
-    </div>
-</div>
+    </body>
 
-</body>
 </html>

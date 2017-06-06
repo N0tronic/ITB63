@@ -3,29 +3,18 @@
 <head>
     <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css"/>
     <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/octicons/4.3.0/build/font/octicons.css"/>
+    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" th:inline="javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var d = /*[[${stats}]]*/  ;
-            var data = google.visualization.arrayToDataTable(d);
-
-            var options = {
-                title: /*[[${frage}]]*/,
-                is3D: true,
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-            chart.draw(data, options);
-        }
+        var d = /*[[${stats}]]*/;
+        var t = /*[[${frage}]]*/;
     </script>
+    <script type="text/javascript" src="js/statistic.js"></script>
 </head>
 <body>
 <div id="nav"></div>
-<script>
-    $('#nav').load("nav.html");
-</script>
 <div class="container">
     <div class="card text-center">
         <div class="card-header">

@@ -1,12 +1,13 @@
 package de.umfrage.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Umfrage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer umfrageID;
     @JsonFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
-    private Date erstellungsdatum = new Date();
+    private Date erstellungsdatum;
     @JsonFormat(pattern = "dd.MM.yyyy")
     private Date startdatum;
     @JsonFormat(pattern = "dd.MM.yyyy")
