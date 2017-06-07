@@ -19,15 +19,17 @@ public class Umfrage {
 
     @JsonFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private Date erstellungsdatum;
+    @JsonFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "dd.MM.yyyy")
     private Date startdatum;
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endedatum;
     private String titel;
     private String email;
     private Integer umfrageID;
+    private String name;
+    private Integer erstellerID;
 
     private List<Frage> fragen;
 

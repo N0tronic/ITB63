@@ -14,24 +14,25 @@ import java.util.List;
  * Created by Virus on 01.06.2017.
  */
 @FeignClient("umfrage-backend")
+@RequestMapping("/online-umfrage")
 public interface UmfrageClient {
 
-    @GetMapping(value = "/online-umfrage/alleUmfragen", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/alleUmfragen", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Umfrage>> holeUmfrageInformationen();
 
-    @GetMapping(value = "/online-umfrage/umfrageByTitel",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/umfrageByTitel",produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Umfrage> holeUmfrageByTitel(@RequestParam("umfragetitel") String umfragetitel);
 
-    @PostMapping(value = "/online-umfrage/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/updateAntwort", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Antwortmoeglichkeit> updateAntworthäufigkeit(@RequestBody int antwortID);
 
-    @GetMapping(value = "/online-umfrage/antwortenByUmfragetitel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/antwortenByUmfragetitel", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Antwortmoeglichkeit>> holeUmfrageAntwortenByTitel(@RequestParam("umfragetitel") String umfragetitel);
 
-    @PostMapping(value = "/online-umfrage/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/deleteUmfrage", consumes = MediaType.APPLICATION_JSON_VALUE)
     void deleteUmfrage(@RequestBody int umfrageID);
 
-    @PutMapping(value = "/online-umfrage/createErsteller", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/createErsteller", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ersteller> createErsteller(@RequestBody Ersteller ersteller);
 
 }

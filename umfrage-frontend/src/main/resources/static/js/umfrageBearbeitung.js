@@ -10,11 +10,17 @@ $(document).ready(function () {
 
 function hideErsteller() {
     if(edit){
-        document.getElementById('erstellerName').disabled = true;
-        document.getElementById('erstellerMail').disabled = true;
-        document.getElementById('erstellerName').required = false;
-        document.getElementById('erstellerMail').required = false;
+        document.getElementById('erstellerName').readOnly = true;
+        document.getElementById('erstellerMail').readOnly = true;
+    } else if(exists) {
+        alert("Es besteht bereits eine Umfrage mit diesem Titel");
+        exists = false;
     }
+}
+
+function validateForm() {
+    alert("Name must be filled out");
+    return false;
 }
 
 $(document).ready(function () {

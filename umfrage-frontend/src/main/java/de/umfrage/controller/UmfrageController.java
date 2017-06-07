@@ -25,10 +25,17 @@ public class UmfrageController {
     UmfrageClient umfrageClient;
 
     @PostMapping(value = "/speichereErstellerUmfrage")
-    public String speichereUmfrage(@ModelAttribute Ersteller ersteller,Model model) {
+    public String speichereUmfrage(@ModelAttribute Ersteller ersteller, Boolean edit, Model model) {
         List<Antwortmoeglichkeit> leereAntworten = new ArrayList<>();
         String umfragetitel = ersteller.getUmfragen().get(0).getTitel();
-        for (Umfrage umfrage: ersteller.getUmfragen()){
+
+        Umfrage umfrageFromDB = umfrageClient.holeUmfrageByTitel(umfragetitel).getBody();
+        if(umfrageFromDB != null && edit != true){
+            model.addAttribute("exists", true);
+            return "umfrageBearbeitung";
+        }
+
+        for (Umfrage umfrage : ersteller.getUmfragen()){
             umfrage.setErstellungsdatum(new Date());
             for (Frage frage : umfrage.getFragen()) {
                 for (Antwortmoeglichkeit antwortmoeglichkeit : frage.getAntwortmoeglichkeiten()) {
@@ -70,6 +77,8 @@ public class UmfrageController {
         Umfrage umfrage = umfrageClient.holeUmfrageByTitel(titel).getBody();
         Ersteller ersteller = new Ersteller();
         ersteller.setEmail(umfrage.getEmail());
+        ersteller.setName(umfrage.getName());
+        ersteller.setErstellerID(umfrage.getErstellerID());
         List<Umfrage> umfragen = new ArrayList<>(1);
         umfragen.add(umfrage);
         ersteller.setUmfragen(umfragen);

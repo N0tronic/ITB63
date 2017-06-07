@@ -1,12 +1,25 @@
+spring:
+  application:
+    name: eureka
+
 server:
   port: ${server_port:8761}
   connection-timeout: 10000
 
 
 eureka:
+  instance:
+    healthCheckUrlPath: /health
   client:
+    region: global
     register-with-eureka: false
     fetch-registry: false
     server:
       waitTimeInMsWhenSyncEmpty: 0
+    fetch-remote-regions-registry:
   connection-timeout: 10000
+
+endpoints:
+  enabled: false
+  health:
+    enabled: true

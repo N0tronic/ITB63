@@ -3,12 +3,12 @@ spring:
     name: umfrage-proxy
 
 server:
-  port: 8000
+  port: 80
 
 zuul:
   host:
-    connect-timeout-millis: 5000
-    socket-timeout-millis: 10000
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
   routes:
     backend:
       path: /online-umfrage/**
@@ -20,6 +20,7 @@ zuul:
 
 eureka:
   client:
+    region: local
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
@@ -29,4 +30,4 @@ hystrix:
             execution:
                 isolation:
                     thread:
-                        timeoutInMilliseconds: 10000
+                        timeoutInMilliseconds: 20000
